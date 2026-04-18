@@ -1,0 +1,51 @@
+@page "/login"
+@inject YourApp.Data.AppDbContext _context
+@using YourApp.Models
+
+<h3>Login</h3>
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="loginModel.Email" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" />
+    </div>
+
+    <button type="submit">Login</button>
+</EditForm>
+
+<p style="color:red">@errorMessage</p>
+
+@code {
+    private LoginModel loginModel = new();
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+    {
+        var user = _context.Users
+            .FirstOrDefault(u => u.Email == loginModel.Email
+                              && u.PasswordHash == loginModel.Password);
+
+        if (user != null)
+        {
+            errorMessage = $"Welcome {user.Name} ({user.Role})";
+        }
+        else
+        {
+            errorMessage = "Invalid credentials";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
+}

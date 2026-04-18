@@ -1,0 +1,123 @@
+@page "/admin"
+@inject YourApp.Data.AppDbContext _context
+
+<h3>Admin Dashboard - Manage Users</h3>
+
+<!-- Add User -->
+<h4>Add User</h4>
+<EditForm Model="newUser" OnValidSubmit="AddUser" FormName="AddUserForm">
+    <InputText @bind-Value="newUser.Name" placeholder="Name" />
+    <InputText @bind-Value="newUser.Email" placeholder="Email" />
+    <InputText @bind-Value="newUser.PasswordHash" placeholder="Password" />
+    
+    <select @bind="newUser.Role">
+        <option>Student</option>
+        <option>Teacher</option>
+        <option>Admin</option>
+    </select>
+
+    <button type="submit">Add</button>
+</EditForm>
+
+<hr />
+
+<!-- Users List -->
+<h4>All Users</h4>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var user in users)
+    {
+        <tr>
+            <td>@user.UserID</td>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@user.Role</td>
+            <td>
+                <button @onclick="() => EditUser(user)">Edit</button>
+                <button @onclick="() => DeleteUser(user.UserID)">Delete</button>
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Edit Section -->
+@if (editUser != null)
+{
+    <h4>Edit User</h4>
+    <EditForm Model="editUser" OnValidSubmit="UpdateUser" FormName="EditUserForm">
+        <InputText @bind-Value="editUser.Name" />
+        <InputText @bind-Value="editUser.Email" />
+        <InputText @bind-Value="editUser.PasswordHash" />
+        
+        <select @bind="editUser.Role">
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Admin</option>
+        </select>
+
+        <button type="submit">Update</button>
+    </EditForm>
+}
+
+@code {
+    List<YourApp.Models.User> users = new();
+    YourApp.Models.User newUser = new() { Name = "", Email = "", PasswordHash = "", Role = "" };
+    YourApp.Models.User? editUser;
+
+    protected override void OnInitialized()
+    {
+        LoadUsers();
+    }
+
+    void LoadUsers()
+    {
+        users = _context.Users.ToList();
+    }
+
+    void AddUser()
+    {
+        _context.Users.Add(newUser);
+        _context.SaveChanges();
+        newUser = new() { Name = "", Email = "", PasswordHash = "", Role = "" };
+        LoadUsers();
+    }
+
+    void DeleteUser(int id)
+    {
+        var user = _context.Users.Find(id);
+        if (user != null)
+        {
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            LoadUsers();
+        }
+    }
+
+    void EditUser(YourApp.Models.User user)
+    {
+        editUser = new YourApp.Models.User
+        {
+            UserID = user.UserID,
+            Name = user.Name,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            Role = user.Role
+        };
+    }
+
+    void UpdateUser()
+    {
+        _context.Users.Update(editUser);
+        _context.SaveChanges();
+        editUser = null;
+        LoadUsers();
+    }
+}
