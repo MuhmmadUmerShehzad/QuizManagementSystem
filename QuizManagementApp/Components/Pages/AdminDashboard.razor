@@ -115,9 +115,12 @@
 
     void UpdateUser()
     {
-        _context.Users.Update(editUser);
-        _context.SaveChanges();
-        editUser = null;
-        LoadUsers();
+        if (editUser != null)
+        {
+            _context.Users.Update(editUser);
+            _context.SaveChanges();
+            editUser = null;
+            LoadUsers();
+        }
     }
 }
