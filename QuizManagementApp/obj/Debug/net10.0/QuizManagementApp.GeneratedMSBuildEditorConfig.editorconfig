@@ -34,6 +34,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Layout/TopNav.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcVG9wTmF2LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/AdminDashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbkRhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,6 +60,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/NotFound.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3RGb3VuZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/StudentDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdHVkZW50RGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/TeacherDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUZWFjaGVyRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/Weather.razor]

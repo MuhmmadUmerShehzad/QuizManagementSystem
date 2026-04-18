@@ -16,7 +16,7 @@
         <option>Admin</option>
     </select>
 
-    <button type="submit">Add</button>
+    <button class="btn btn-primary" type="submit">Add</button>
 </EditForm>
 
 <hr />
@@ -24,7 +24,7 @@
 <!-- Users List -->
 <h4>All Users</h4>
 
-<table border="1">
+<table border="1" style="gap: 100px;">
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -41,8 +41,8 @@
             <td>@user.Email</td>
             <td>@user.Role</td>
             <td>
-                <button @onclick="() => EditUser(user)">Edit</button>
-                <button @onclick="() => DeleteUser(user.UserID)">Delete</button>
+                <button class="btn btn-primary" @onclick="() => EditUser(user)">Edit</button>
+                <button class="btn btn-primary" @onclick="() => DeleteUser(user.UserID)">Delete</button>
             </td>
         </tr>
     }
@@ -63,7 +63,7 @@
             <option>Admin</option>
         </select>
 
-        <button type="submit">Update</button>
+        <button class="btn btn-primary" type="submit">Update</button>
     </EditForm>
 }
 

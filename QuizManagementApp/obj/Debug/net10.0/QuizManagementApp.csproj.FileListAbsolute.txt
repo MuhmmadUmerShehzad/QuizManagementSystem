@@ -24,7 +24,6 @@ D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\sc
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\scopedcss\Components\Layout\ReconnectModal.razor.rz.scp.css
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\scopedcss\bundle\QuizManagementApp.styles.css
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\scopedcss\projectbundle\QuizManagementApp.bundle.scp.css
-D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\awtqtxq815-{0}-khy4lop6wu-khy4lop6wu.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\y4iuy4jwk6-{0}-bqjiyaj88i-bqjiyaj88i.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\yj9xpmobje-{0}-c2jlpeoesf-c2jlpeoesf.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\cuwxbbsqzm-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -72,8 +71,6 @@ D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\co
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\1b1r69szsi-{0}-abdmv1u4y3-abdmv1u4y3.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\2utvu3sq7e-{0}-qcnkhbt5lj-qcnkhbt5lj.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\mrofd4604u-{0}-12rnbzdyyc-12rnbzdyyc.gz
-D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\ky8e6l7dje-{0}-zpiupteqje-zpiupteqje.gz
-D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\yv1tko64z2-{0}-zpiupteqje-zpiupteqje.gz
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\staticwebassets.build.json
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\staticwebassets.build.json.cache
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\staticwebassets.development.json
@@ -211,3 +208,6 @@ D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\bin\Debug\net10.0\ru
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\awtqtxq815-{0}-htkibeoi6o-htkibeoi6o.gz
+D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\ky8e6l7dje-{0}-gqr04aonb9-gqr04aonb9.gz
+D:\Coding\IAD_github\QuizManagementSystem\QuizManagementApp\obj\Debug\net10.0\compressed\yv1tko64z2-{0}-gqr04aonb9-gqr04aonb9.gz

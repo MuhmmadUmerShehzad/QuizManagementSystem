@@ -4,7 +4,10 @@
     display: flex;
     flex-direction: column;
 }
-
+*[b-exfwqym9dn]{
+    margin: 0;
+    padding: 0;
+}
 main[b-exfwqym9dn] {
     flex: 1;
 }

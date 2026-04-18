@@ -1,41 +1,53 @@
 @page "/login"
 @inject YourApp.Data.AppDbContext _context
 @using YourApp.Models
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
 
 <h3>Login</h3>
 
-<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="LoginForm">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<input @bind="loginModel.Email" placeholder="Email" />
+<input @bind="loginModel.Password" type="password" placeholder="Password" />
 
-    <div>
-        <label>Email:</label>
-        <InputText @bind-Value="loginModel.Email" />
-    </div>
-
-    <div>
-        <label>Password:</label>
-        <InputText @bind-Value="loginModel.Password" type="password" />
-    </div>
-
-    <button type="submit">Login</button>
-</EditForm>
+<button class="btn btn-primary" @onclick="HandleLogin">Login</button>
 
 <p style="color:red">@errorMessage</p>
 
-@code {
-    private LoginModel loginModel = new();
-    private string errorMessage = "";
+<p>Email: '@loginModel.Email'</p>
+<p>Password: '@loginModel.Password'</p>
 
+@code {
+    private LoginModel loginModel = new LoginModel
+    {
+        Email = "",
+        Password = ""
+    };
+    private string errorMessage = "";
+    
     private async Task HandleLogin()
     {
-        var user = _context.Users
-            .FirstOrDefault(u => u.Email == loginModel.Email
-                              && u.PasswordHash == loginModel.Password);
+        string? email = loginModel.Email?.Trim().ToLower();
+        string? password = loginModel.Password?.Trim();
 
-        if (user != null)
+        User? user = _context.Users
+            .FirstOrDefault(u =>
+                u.Email.ToLower() == email &&
+                u.PasswordHash == password);
+
+        if(user == null){
+            errorMessage = "Please fill in all other fields";
+            return;
+        }
+
+        if (user.Role == "admin")
         {
-            errorMessage = $"Welcome {user.Name} ({user.Role})";
+            navigationManager.NavigateTo("/admin");
+        }
+        else if (user.Role =="Student" ){
+            navigationManager.NavigateTo("/student");
+        }
+        else if (user.Role =="Teacher" ){
+            navigationManager.NavigateTo("/teacher");
         }
         else
         {
