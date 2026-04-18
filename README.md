@@ -1,0 +1,2 @@
+# QuizManagementSystem
+A web-based quiz management system built with ASP.NET Blazor and SQL Server, supporting role-based access for teachers and students. It allows quiz creation, online attempts, and result tracking with features like timed and randomized assessments.
