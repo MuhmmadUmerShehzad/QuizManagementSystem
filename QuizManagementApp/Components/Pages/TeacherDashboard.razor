@@ -29,7 +29,7 @@
             </div>
             <div class="card-body">
                 <p>Manage question banks and categories.</p>
-                <button class="btn btn-primary">Add Questions</button>
+                <button class="btn btn-primary" @onclick="ManageButton">Manage Questions</button>
             </div>
         </div>
     </div>
@@ -53,5 +53,11 @@
         if(!session.isLoggedIn || session.CurrentUser.Role != "Teacher"){
             navigationManager.NavigateTo("/login");
         }
+    }
+    public void ManageButton(){
+        navigationManager.NavigateTo("/teacher/questions");
+    }
+    public void CreateQuiz(){
+        navigationManager.NavigateTo("/teacher/quiz");
     }
 }

@@ -29,6 +29,10 @@
     {
         string? email = loginModel.Email?.Trim().ToLower();
         string? password = loginModel.Password?.Trim();
+        
+        if(email==null || password ==null){
+            errorMessage = "Please fill in all the fields";
+        }
 
         User? user = _context.Users
             .FirstOrDefault(u =>
@@ -36,7 +40,7 @@
                 u.PasswordHash == password);
 
         if(user == null){
-            errorMessage = "Please fill in all other fields";
+            errorMessage = "Invalid Creditentials";
             return;
         }
 

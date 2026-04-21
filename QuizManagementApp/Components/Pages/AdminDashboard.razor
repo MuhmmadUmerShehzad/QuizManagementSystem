@@ -76,11 +76,11 @@
 
     protected override void OnInitialized()
     {
-        if (session.CurrentUser != null)
-            if (!session.isLoggedIn || session.CurrentUser.Role != "admin")
-            {
-                navigationManager.NavigateTo("/login");
-            }
+        
+        if (!session.isLoggedIn || session.CurrentUser.Role != "admin")
+        {
+            navigationManager.NavigateTo("/login");
+        }
         LoadUsers();
     }
 
