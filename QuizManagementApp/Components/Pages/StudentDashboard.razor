@@ -1,4 +1,6 @@
 @page "/student"
+@inject YourApp.Services.sessionService sessionService
+@inject NavigationManager navigationManager
 
 <h3>Student Dashboard</h3>
 
@@ -35,6 +37,9 @@
 @code {
     protected override void OnInitialized()
     {
-        // Add initialization logic here
+        if(!sessionService.isLoggedIn || sessionService.CurrentUser.Role != "Student")
+        {
+            navigationManager.NavigateTo("/login");
+        }
     }
 }

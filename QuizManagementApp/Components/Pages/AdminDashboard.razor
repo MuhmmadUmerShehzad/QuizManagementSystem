@@ -1,5 +1,7 @@
 @page "/admin"
 @inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService session
+@inject NavigationManager navigationManager
 
 <h3>Admin Dashboard - Manage Users</h3>
 
@@ -74,6 +76,11 @@
 
     protected override void OnInitialized()
     {
+        if (session.CurrentUser != null)
+            if (!session.isLoggedIn || session.CurrentUser.Role != "admin")
+            {
+                navigationManager.NavigateTo("/login");
+            }
         LoadUsers();
     }
 

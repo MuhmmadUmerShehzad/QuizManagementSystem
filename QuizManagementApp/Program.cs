@@ -9,6 +9,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddScoped<YourApp.Services.sessionService>();
 
 var app = builder.Build();
 
