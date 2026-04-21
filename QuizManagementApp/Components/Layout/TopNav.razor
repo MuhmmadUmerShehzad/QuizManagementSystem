@@ -1,6 +1,18 @@
+@inject YourApp.Services.sessionService session
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
 <nav style="background-color:#333; padding:10px; color:white; display:flex; justify-content:space-around;">
     <a href="/login" style="color:white; margin-right:15px;">Login</a>
     <a href="/admin" style="color:white;">Admin</a>
     <a href="/teacher" style="color:white;">Teacher</a>
     <a href="/student" style="color:white;">Student</a>
+    <button @onclick="Logout">Logout</button>
 </nav>
+
+@code{
+    void Logout(){
+        session.CurrentUser = null;
+        navigationManager.NavigateTo("/login");
+    }
+}
