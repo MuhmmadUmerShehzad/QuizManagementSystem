@@ -1,0 +1,11 @@
+﻿@page "/"
+@inject NavigationManager navigationManager
+
+<PageTitle>Home</PageTitle>
+
+@code{
+    protected override void OnInitialized()
+    {
+        navigationManager.NavigateTo("/login");
+    }
+}

@@ -1,0 +1,65 @@
+@page "/login"
+@inject YourApp.Data.AppDbContext _context
+@using YourApp.Models
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject YourApp.Services.sessionService sessionService
+
+<h3>Login</h3>
+
+<input @bind="loginModel.Email" placeholder="Email" />
+<input @bind="loginModel.Password" type="password" placeholder="Password" />
+
+<button class="btn btn-primary" @onclick="HandleLogin">Login</button>
+
+<p style="color:red">@errorMessage</p>
+
+<p>Email: '@loginModel.Email'</p>
+<p>Password: '@loginModel.Password'</p>
+
+@code {
+    private LoginModel loginModel = new LoginModel
+    {
+        Email = "",
+        Password = ""
+    };
+    private string errorMessage = "";
+    
+    private async Task HandleLogin()
+    {
+        string? email = loginModel.Email?.Trim().ToLower();
+        string? password = loginModel.Password?.Trim();
+
+        User? user = _context.Users
+            .FirstOrDefault(u =>
+                u.Email.ToLower() == email &&
+                u.PasswordHash == password);
+
+        if(user == null){
+            errorMessage = "Please fill in all other fields";
+            return;
+        }
+
+        sessionService.CurrentUser =  user;
+        if (user.Role == "admin")
+        {
+            navigationManager.NavigateTo("/admin");
+        }
+        else if (user.Role =="Student" ){
+            navigationManager.NavigateTo("/student");
+        }
+        else if (user.Role =="Teacher" ){
+            navigationManager.NavigateTo("/teacher");
+        }
+        else
+        {
+            errorMessage = "Invalid credentials";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
+}

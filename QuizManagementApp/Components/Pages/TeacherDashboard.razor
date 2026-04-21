@@ -1,0 +1,57 @@
+@page "/teacher"
+@inject YourApp.Services.sessionService session
+@inject NavigationManager navigationManager
+
+<h3>Teacher Dashboard</h3>
+
+<p>Welcome to the Teacher Dashboard. Here you will be able to manage quizzes and students.</p>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quizzes</h5>
+            </div>
+            <div class="card-body">
+                <p>Create and manage your quizzes.</p>
+                <button class="btn btn-primary">Create New Quiz</button>
+                <button class="btn btn-secondary mt-2">Manage Existing</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Questions</h5>
+            </div>
+            <div class="card-body">
+                <p>Manage question banks and categories.</p>
+                <button class="btn btn-primary">Add Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Student Results</h5>
+            </div>
+            <div class="card-body">
+                <p>View grades and analytics.</p>
+                <button class="btn btn-primary">View Results</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if(!session.isLoggedIn || session.CurrentUser.Role != "Teacher"){
+            navigationManager.NavigateTo("/login");
+        }
+    }
+}
