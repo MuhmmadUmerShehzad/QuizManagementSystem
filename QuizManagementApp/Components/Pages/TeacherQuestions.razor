@@ -1,0 +1,176 @@
+@page "/teacher/questions"
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService Session
+@inject NavigationManager NavManager
+
+@rendermode InteractiveServer
+
+<h3>Question Management</h3>
+
+<h4>Add Question</h4>
+
+<input @bind="questionText" @bind:event="oninput" placeholder="Enter Question" />
+
+Choose Subject: 
+<select @bind="selectedSubjectId">Subject
+    @foreach (var s in subjects)
+    {
+        <option value="@s.SubjectID">@s.SubjectName</option>
+    }
+</select>
+
+Choose Difficulty Level: 
+<select @bind="difficultyLevel" >
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+</select>
+
+<br /><br />
+
+<div>
+    <input @bind="option1" placeholder="Option 1" />
+    <input type="radio" name="correct" @onclick="() => correctIndex = 0" /> Correct
+
+    <br />
+
+    <input @bind="option2" placeholder="Option 2" />
+    <input type="radio" name="correct" @onclick="() => correctIndex = 1" /> Correct
+
+    <br />
+
+    <input @bind="option3" placeholder="Option 3" />
+    <input type="radio" name="correct" @onclick="() => correctIndex = 2" /> Correct
+
+    <br />
+
+    <input @bind="option4" placeholder="Option 4" />
+    <input type="radio" name="correct" @onclick="() => correctIndex = 3" /> Correct
+</div>
+
+
+<button @onclick="AddQuestion">Add Question</button>
+
+<hr />
+
+<!-- View Questions -->
+<h4>All Questions</h4>
+
+@foreach (var q in questions)
+{
+    <div style="border:1px solid gray; margin:5px; padding:5px;">
+        <b>@q.QuestionText</b>
+        <button @onclick="() => DeleteQuestion(q.QuestionID)">Delete</button>
+    </div>
+}
+
+<p style="color:red"><b>DEBUG:</b> @debugMessage</p>
+
+<p>Option 1: '@option1'</p>
+<p>Option 2: '@option2'</p>
+<p>Option 3: '@option3'</p>
+<p>Option 4: '@option4'</p>
+<p>Difficulty Level: @difficultyLevel'</p>
+
+@code {
+    List<Question> questions = new();
+    List<Subject> subjects = new();
+
+    int difficultyLevel = 1;
+
+    string questionText = "";
+    int selectedSubjectId;
+    string option1 = "";
+    string option2 = "";
+    string option3 = "";
+    string option4 = "";
+    int correctIndex = 0;
+
+    protected override void OnInitialized()
+    {
+        // 🔐 Protect page
+        if (!Session.isLoggedIn || Session.CurrentUser.Role != "Teacher")
+        {
+            NavManager.NavigateTo("/login");
+            return;
+        }
+
+        subjects = _context.Subjects.ToList();
+        questions = _context.Questions.ToList();
+    }
+
+    string debugMessage = "";
+
+    void AddQuestion()
+    {
+        var optionList = new List<string> { option1, option2, option3, option4 };
+        try
+        {
+            debugMessage = "Starting AddQuestion...";
+
+            var q = new Question
+            {
+                QuestionText = questionText,
+                subjectID = selectedSubjectId,
+                CreatedBy = Session.CurrentUser.UserID,
+                difficultyLevel = difficultyLevel
+            };
+
+            _context.Questions.Add(q);
+            _context.SaveChanges();
+
+            debugMessage = $"Question saved with ID: {q.QuestionID}";
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                var opt = new Option
+                {
+                    QuestionID = q.QuestionID,
+                    OptionText = optionList[i],
+                    IsCorrect = (i == correctIndex)
+                };
+
+                _context.Options.Add(opt);
+            }
+
+            _context.SaveChanges();
+
+            debugMessage = "All options saved successfully";
+
+            // reset
+            questionText = "";
+            option1 = option2 = option3 = option4 = "";
+
+            LoadData();
+        }
+        catch (Exception ex)
+        {
+            debugMessage = "ERROR: " + ex.Message;
+
+            if (ex.InnerException != null)
+            {
+                debugMessage += " | INNER: " + ex.InnerException.Message;
+            }
+        }
+    }
+
+    void DeleteQuestion(int id)
+    {
+        var q = _context.Questions.Find(id);
+        if (q != null)
+        {
+            var opts = _context.Options.Where(o => o.QuestionID == id);
+            _context.Options.RemoveRange(opts);
+            _context.Questions.Remove(q);
+            _context.SaveChanges();
+
+            LoadData();
+        }
+    }
+
+    void LoadData()
+    {
+        questions = _context.Questions.ToList();
+    }
+}
