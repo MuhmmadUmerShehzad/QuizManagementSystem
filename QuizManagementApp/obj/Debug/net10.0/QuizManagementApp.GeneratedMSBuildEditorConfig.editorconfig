@@ -42,6 +42,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbkRhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/AttemptQuiz.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdHRlbXB0UXVpei5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -64,6 +68,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/StudentDashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdHVkZW50RGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/StudentQuiz.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdHVkZW50UXVpei5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/StudentResults.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdHVkZW50UmVzdWx0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/TeacherDashboard.razor]

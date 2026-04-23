@@ -2,6 +2,11 @@
 @using YourApp.Models
 @inject YourApp.Data.AppDbContext _context
 @rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
 
 <div>Results</div>
 
@@ -62,5 +67,9 @@
                .AsEnumerable()
                .Select(x => (x.UserName, x.QuizTitle, x.Percentage))
                .ToList();
+    }
+     void GoBackToDashboard()
+    {
+        NavManager.NavigateTo("/teacher");
     }
 }

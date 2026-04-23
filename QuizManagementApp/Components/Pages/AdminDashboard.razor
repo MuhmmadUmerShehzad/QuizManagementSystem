@@ -3,6 +3,10 @@
 @inject YourApp.Services.sessionService session
 @inject NavigationManager navigationManager
 
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToHome">Back to Home</button>
+</div>
+
 <h3>Admin Dashboard - Manage Users</h3>
 
 <!-- Add User -->
@@ -129,5 +133,10 @@
             editUser = null;
             LoadUsers();
         }
+    }
+
+    void GoBackToHome()
+    {
+        navigationManager.NavigateTo("/");
     }
 }

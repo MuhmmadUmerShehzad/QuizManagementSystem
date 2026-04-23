@@ -1,0 +1,118 @@
+@page "/student/results"
+@rendermode InteractiveServer
+
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService Session
+@inject NavigationManager navigationManager
+
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
+
+<h3>My Results</h3>
+
+<br />
+
+<!-- Subject Dropdown -->
+<select @bind="selectedSubjectId">
+    <option value="0">All Subjects</option>
+
+    @foreach (var s in subjects)
+    {
+        <option value="@s.SubjectID">@s.SubjectName</option>
+    }
+</select>
+
+<br /><br />
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Quiz </th>
+            <th>|| Subject</th>
+            <th>|| Score</th>
+            <th>|| Attempt Time</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in filteredResults)
+        {
+            <tr>
+                <td>@item.QuizTitle</td>
+                <td>|| @item.SubjectName</td>
+                <td>|| @item.Score</td>
+                <td>||@item.AttemptTime.ToString("yyyy-MM-dd HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p style="color:red">@message</p>
+
+@code {
+
+    int selectedSubjectId = 0;
+    string message = "";
+
+    List<Subject> subjects = new();
+    List<ResultView> results = new();
+
+    protected override void OnInitialized()
+    {
+        if (!Session.isLoggedIn || Session.CurrentUser?.Role != "Student")
+        {
+            @* navigationManager.NavigateTo("/login");
+            return; *@
+        }
+
+        subjects = _context.Subjects.ToList();
+
+        LoadResults();
+    }
+
+    void LoadResults()
+    {
+        try
+        {
+            int studentId = Session.CurrentUser.UserID;
+
+            // JOIN: Subjects + Quizzes + Attempts
+            results = (from a in _context.Attempts
+                       join q in _context.Quizzes on a.QuizID equals q.QuizID
+                       join s in _context.Subjects on q.SubjectID equals s.SubjectID
+                       where a.StudentID == studentId
+                       select new ResultView
+                       {
+                           QuizTitle = q.Title,
+                           SubjectID = s.SubjectID,
+                           SubjectName = s.SubjectName,
+                           Score = a.Score,
+                           AttemptTime = a.EndTime
+                       }).ToList();
+        }
+        catch (Exception ex)
+        {
+            message = "Error: " + ex.Message;
+        }
+    }
+
+    List<ResultView> filteredResults =>
+        selectedSubjectId == 0
+        ? results
+        : results.Where(r => r.SubjectID == selectedSubjectId).ToList();
+
+    class ResultView
+    {
+        public string? QuizTitle { get; set; }
+        public int SubjectID { get; set; }
+        public string? SubjectName { get; set; }
+        public int Score { get; set; }
+        public DateTime AttemptTime { get; set; }
+    }
+    
+    void GoBackToDashboard()
+    {
+        navigationManager.NavigateTo("/student/quizzes");
+    }
+}

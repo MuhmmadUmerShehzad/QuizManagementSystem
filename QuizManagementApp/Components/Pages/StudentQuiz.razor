@@ -1,0 +1,83 @@
+@page "/student/quizzes"
+@using YourApp.Services
+@rendermode InteractiveServer
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService sessionService
+@inject NavigationManager navigationManager
+
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
+
+<h3>Browse Quizzes</h3>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Start Time</th>
+            <th>Duration (min)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var q in availableQuizzes)
+        {
+            <tr>
+                <td>@q.Title</td>
+                <td>@GetSubjectName(q.SubjectID)</td>
+                <td>@q.StartTime</td>
+                <td>|| @q.Duration</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => StartAttempt(q)">Attempt</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Quiz> availableQuizzes = new();
+    List<Subject> subjects = new();
+    int studentId;
+
+    protected override void OnInitialized()
+    {
+        if (sessionService == null ||
+        !sessionService.isLoggedIn ||
+        sessionService.CurrentUser == null)
+        {
+            navigationManager.NavigateTo("/login");
+            return;
+        }
+
+
+        subjects = _context.Subjects.ToList();
+        int studentId = sessionService.CurrentUser.UserID;
+
+        var availableQuizzes = (from q in _context.Quizzes
+                                join a in _context.Attempts
+                                on q.QuizID equals a.QuizID into qa
+                                from a in qa
+                                    .Where(x => x.StudentID == studentId)
+                                    .DefaultIfEmpty()
+                                where a == null
+                                select q).ToList();
+    }
+
+    string GetSubjectName(int id)
+    {
+        return subjects.FirstOrDefault(s => s.SubjectID == id)?.SubjectName ?? "";
+    }
+
+    void StartAttempt(Quiz quiz)
+    {
+        navigationManager.NavigateTo($"/student/attempt/{quiz.QuizID}/{quiz.StartTime.Ticks}");
+    }
+
+    void GoBackToDashboard()
+    {
+        navigationManager.NavigateTo("/student");
+    }
+}

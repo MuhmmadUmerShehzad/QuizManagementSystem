@@ -5,6 +5,10 @@
 @inject YourApp.Services.sessionService Session
 @inject NavigationManager NavManager
 
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
+
 <h3>Manage Quizzes</h3>
 
 <br />
@@ -108,5 +112,9 @@
         {
             message = "Error: " + ex.Message;
         }
+    }
+     void GoBackToDashboard()
+    {
+        NavManager.NavigateTo("/teacher");
     }
 }

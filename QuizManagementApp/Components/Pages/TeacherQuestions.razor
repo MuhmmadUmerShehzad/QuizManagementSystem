@@ -6,6 +6,10 @@
 
 @rendermode InteractiveServer
 
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
+
 <h3>Question Management</h3>
 
 
@@ -242,6 +246,11 @@ Choose Difficulty Level:
         {
             message = "Invalid subject selection";
         }
+    }
+
+    void GoBackToDashboard()
+    {
+        NavManager.NavigateTo("/teacher");
     }
     
 }
