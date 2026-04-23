@@ -1,0 +1,112 @@
+@page "/teacher/manage-quizzes"
+@rendermode InteractiveServer
+
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService Session
+@inject NavigationManager NavManager
+
+<h3>Manage Quizzes</h3>
+
+<br />
+
+<!-- Subject Filter -->
+<select @bind="selectedSubjectId">
+    <option value="0">All Subjects</option>
+
+    @foreach (var s in subjects)
+    {
+        <option value="@s.SubjectID">@s.SubjectName</option>
+    }
+</select>
+
+<br /><br />
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Start Time</th>
+            <th>Duration (min)</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var q in filteredQuizzes)
+        {
+            <tr>
+                <td>@q.Title</td>
+                <td>@GetSubjectName(q.SubjectID)</td>
+                <td>@q.StartTime</td>
+                <td>---@q.Duration</td>
+                <td>
+                    <button @onclick="() => DeleteQuiz(q.QuizID)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p style="color:red">@message</p>
+
+@code {
+
+    List<Quiz> quizzes = new();
+    List<Subject> subjects = new();
+
+    int selectedSubjectId = 0;
+    string message = "";
+
+    protected override void OnInitialized()
+    {
+        // protect page
+        if (!Session.isLoggedIn || Session.CurrentUser.Role != "Teacher")
+        {
+            NavManager.NavigateTo("/login");
+            return;
+        }
+
+        quizzes = _context.Quizzes.ToList();
+        subjects = _context.Subjects.ToList();
+    }
+
+    List<Quiz> filteredQuizzes =>
+        selectedSubjectId == 0
+        ? quizzes
+        : quizzes.Where(q => q.SubjectID == selectedSubjectId).ToList();
+
+    string GetSubjectName(int id)
+    {
+        return subjects.FirstOrDefault(s => s.SubjectID == id)?.SubjectName ?? "";
+    }
+
+    void DeleteQuiz(int id)
+    {
+        try
+        {
+            var quiz = _context.Quizzes.Find(id);
+
+            if (quiz != null)
+            {
+                // OPTIONAL: delete related questions first if needed
+                var questions = _context.Questions.Where(q => q.QuizID == id);
+                _context.Questions.RemoveRange(questions);
+
+                _context.Quizzes.Remove(quiz);
+                _context.SaveChanges();
+
+                message = "Quiz deleted successfully";
+
+                // refresh list
+                quizzes = _context.Quizzes.ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            message = "Error: " + ex.Message;
+        }
+    }
+}

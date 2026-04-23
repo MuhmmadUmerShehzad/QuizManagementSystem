@@ -1,0 +1,66 @@
+@page "/teacher/results"
+@using YourApp.Models
+@inject YourApp.Data.AppDbContext _context
+@rendermode InteractiveServer
+
+<div>Results</div>
+
+<select @bind="@subjectId" @bind:after="LoadResults">
+    @foreach (Subject s in subjects)
+    {
+        <option value="@s.SubjectID">@s.SubjectName</option>
+    }
+</select>
+<br><br>
+<table border="2" cellpadding="8" cellborder="2">
+    <thead>
+        <tr>
+            <th>Student Name | </th>
+            <th>| Quiz Title |</th>
+            <th>| Marks Obtained</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var r in results)
+        {
+            <tr>
+                <td>@r.UserName</td>
+                <td>||@r.title</td>
+                <td>|| @r.percentage</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    List<Subject> subjects = new List<Subject>();
+    List<(string UserName, string title, double percentage)> results;
+    List<User> students = new List<User>();
+    int subjectId = 1;
+
+    protected override void OnInitialized()
+    {
+        subjects = _context.Subjects.ToList();
+        LoadResults();
+        
+    }
+    protected void LoadResults()
+    {
+        results = (from a in _context.Attempts
+                join r in _context.Results on a.AttemptID equals r.AttemptID
+                join q in _context.Quizzes on a.QuizID equals q.QuizID
+                join u in _context.Users on a.StudentID equals u.UserID
+                where q.SubjectID == subjectId
+                select new
+                {
+                   UserName = u.Name,
+                   QuizTitle = q.Title,
+                   Percentage = r.Percentage
+               })
+               .AsEnumerable()
+               .Select(x => (x.UserName, x.QuizTitle, x.Percentage))
+               .ToList();
+    }
+}
