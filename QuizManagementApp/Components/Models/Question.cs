@@ -8,4 +8,6 @@ public class Question
     public int difficultyLevel { get; set; }
 
     public Subject? subject { get; set; }
+
+    public int QuizID { get; set; }
 }

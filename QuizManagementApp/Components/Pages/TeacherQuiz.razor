@@ -10,11 +10,30 @@
 <input @bind="title" placeholder="Quiz Title" />
 
 <br /><br />
+<h3>Select Subject</h3>
+
+<select @bind="subjectID">
+    @foreach (var s in _context.Subjects.ToList())
+    {
+        <option value="@s.SubjectID">@s.SubjectName</option>
+    }
+</select>
+<br /><br />
+
+<label>Start Time:</label>
+<input type="datetime-local" @bind="startTime" />
+
+<br /><br />
 
 <label>Duration (minutes):</label>
 <input type="number" @bind="duration" />
 
 <br /><br />
+<label>Remarks:</label>
+<input type="text" @bind="remarks" />
+
+<br /><br />
+
 
 <label>
     <input type="checkbox" @bind="randomizeQuestions" />
@@ -30,31 +49,33 @@
 
 <hr />
 
-<h4>Select Questions</h4>
+<button @onclick="CreateQuiz">Create Quiz</button>
 
-@foreach (var q in questions)
+<h4>Available Quizzes</h4>
+
+@foreach (var q in listQuizes)
 {
     <div>
-        <input type="checkbox" @onchange="(e => ToggleQuestion(q.QuestionID, e))" />
-        @q.QuestionText
+        @q.Title
     </div>
 }
 
 <br />
 
-<button @onclick="CreateQuiz">Create Quiz</button>
 
 <p style="color:green">@message</p>
 
 @code {
-    List<Question> questions = new();
-    List<int> selectedQuestions = new();
+    List<Quiz> listQuizes = new();
 
+    DateTime startTime = DateTime.Now;
     string title = "";
     int duration = 10;
     bool randomizeQuestions = false;
     bool shuffleOptions = false;
     string message = "";
+    string remarks = "";
+    int subjectID = 1;
 
     protected override void OnInitialized()
     {
@@ -64,19 +85,9 @@
             return;
         }
 
-        questions = _context.Questions.ToList();
+        listQuizes = _context.Quizzes.ToList();
+        StateHasChanged();
     }
-
-    void ToggleQuestion(int id, ChangeEventArgs e)
-    {
-        bool isChecked = (bool)e.Value;
-
-        if (isChecked)
-            selectedQuestions.Add(id);
-        else
-            selectedQuestions.Remove(id);
-    }
-
     void CreateQuiz()
     {
         try
@@ -84,24 +95,17 @@
             var quiz = new Quiz
             {
                 Title = title,
-                SubjectID = 1, // simplify for now
+                SubjectID = subjectID,
                 CreatedBy = Session.CurrentUser.UserID,
                 Duration = duration,
+                StartTime = startTime,
                 RandomizeQuestions = randomizeQuestions,
-                ShuffleOptions = shuffleOptions
+                ShuffleOptions = shuffleOptions,
+                remarks = remarks
             };
 
             _context.Quizzes.Add(quiz);
             _context.SaveChanges();
-
-            foreach (var qid in selectedQuestions)
-            {
-                _context.QuizQuestions.Add(new QuizQuestion
-                {
-                    QuizID = quiz.QuizID,
-                    QuestionID = qid
-                });
-            }
 
             _context.SaveChanges();
 
@@ -109,7 +113,14 @@
 
             // reset
             title = "";
-            selectedQuestions.Clear();
+            startTime = DateTime.Now;
+            duration = 10;
+            randomizeQuestions = false;
+            shuffleOptions = false;
+            remarks = "";
+
+            // refresh list
+            listQuizes = _context.Quizzes.ToList();
         }
         catch (Exception ex)
         {
