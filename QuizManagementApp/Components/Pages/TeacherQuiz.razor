@@ -81,12 +81,12 @@
     {
         if (!Session.isLoggedIn || Session.CurrentUser.Role != "Teacher")
         {
-            @* NavManager.NavigateTo("/login"); *@
-            @* return; *@
+            NavManager.NavigateTo("/login");
+            return;
         }
 
-         listQuizes = _context.Quizzes.ToList();
-         StateHasChanged();
+        listQuizes = _context.Quizzes.ToList();
+        StateHasChanged();
     }
     void CreateQuiz()
     {
@@ -96,7 +96,7 @@
             {
                 Title = title,
                 SubjectID = subjectID,
-                CreatedBy = 1,
+                CreatedBy = Session.CurrentUser.UserID,
                 Duration = duration,
                 StartTime = startTime,
                 RandomizeQuestions = randomizeQuestions,
