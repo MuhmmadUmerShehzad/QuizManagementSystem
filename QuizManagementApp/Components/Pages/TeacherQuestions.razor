@@ -64,13 +64,6 @@ Choose Difficulty Level:
     </div>
 }
 
-<p style="color:red"><b>DEBUG:</b> @debugMessage</p>
-
-<p>Option 1: '@option1'</p>
-<p>Option 2: '@option2'</p>
-<p>Option 3: '@option3'</p>
-<p>Option 4: '@option4'</p>
-<p>Difficulty Level: @difficultyLevel'</p>
 
 @code {
     List<Question> questions = new();
@@ -91,7 +84,7 @@ Choose Difficulty Level:
         // 🔐 Protect page
         if (!Session.isLoggedIn || Session.CurrentUser.Role != "Teacher")
         {
-            NavManager.NavigateTo("/login");
+            @* NavManager.NavigateTo("/login"); *@
             return;
         }
 
