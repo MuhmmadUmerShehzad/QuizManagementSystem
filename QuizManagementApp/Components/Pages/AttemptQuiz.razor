@@ -34,6 +34,12 @@
 
                     @{
                         var questionOptions = options.Where(o => o.QuestionID == question.QuestionID).ToList();
+
+                        if (quiz.ShuffleOptions)
+                        {
+                            Random rng = new Random();
+                            questionOptions = questionOptions.OrderBy(o => rng.Next()).ToList();
+                        }
                     }
 
                     @foreach (var option in questionOptions)
@@ -93,8 +99,8 @@ else
     {
         if (sessionService == null || !sessionService.isLoggedIn || sessionService.CurrentUser?.Role != "Student")
         {
-            @* navigationManager.NavigateTo("/login"); *@
-            @* return; *@
+            navigationManager.NavigateTo("/login"); 
+            return;
         }
 
         // Convert ticks back to DateTime
@@ -104,31 +110,43 @@ else
     }
 
     void LoadQuiz()
+{
+    try
     {
-        try
+        quiz = _context.Quizzes.FirstOrDefault(q => q.QuizID == QuizId);
+
+        if (quiz == null)
         {
-            // Load quiz
-            quiz = _context.Quizzes.FirstOrDefault(q => q.QuizID == QuizId);
-
-            if (quiz == null)
-            {
-                errorMessage = "Quiz not found.";
-                return;
-            }
-
-            // Load questions for this quiz
-            questions = _context.Questions.Where(q => q.QuizID == QuizId).ToList();
-
-            // Load options for all questions
-            var questionIds = questions.Select(q => q.QuestionID).ToList();
-            options = _context.Options.Where(o => questionIds.Contains(o.QuestionID)).ToList();
+            errorMessage = "Quiz not found.";
+            return;
         }
-        catch (Exception ex)
+
+        // Load questions
+        questions = _context.Questions.Where(q => q.QuizID == QuizId).ToList();
+
+        // Randomize questions if enabled
+        if (quiz.RandomizeQuestions)
         {
-            errorMessage = "Error loading quiz: " + ex.Message;
+            Random rng = new Random();
+            questions = questions.OrderBy(q => rng.Next()).ToList();
+        }
+
+        // Load options
+        var questionIds = questions.Select(q => q.QuestionID).ToList();
+        options = _context.Options.Where(o => questionIds.Contains(o.QuestionID)).ToList();
+
+        // Randomize options for each question if enabled
+        if (quiz.ShuffleOptions)
+        {
+            Random rng = new Random();
+            // Note: ShufflFing options requires handling in the UI rendering
         }
     }
-
+    catch (Exception ex)
+    {
+        errorMessage = "Error loading quiz: " + ex.Message;
+    }
+}
     void SelectAnswer(int questionId, int optionId)
     {
         if (studentAnswers.ContainsKey(questionId))

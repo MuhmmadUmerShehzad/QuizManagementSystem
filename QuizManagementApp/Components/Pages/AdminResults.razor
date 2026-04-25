@@ -1,0 +1,90 @@
+@page "/admin/quiz/{QuizId:int}/results"
+@rendermode InteractiveServer
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService sessionService
+@inject NavigationManager navigationManager
+
+<h3>@quiz?.Title - Results</h3>
+
+<button class="btn btn-secondary" @onclick="GoBack">Back to Quizzes</button>
+
+<br /><br />
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Score</th>
+            <th>Total Marks</th>
+            <th>Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in results)
+        {
+            <tr>
+                <td>@result.StudentName</td>
+                <td>@result.StudentEmail</td>
+                <td>@result.StartTime</td>
+                <td>@result.EndTime</td>
+                <td>@result.Score</td>
+                <td>@result.TotalMarks</td>
+                <td>@result.Percentage%</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public int QuizId { get; set; }
+
+    Quiz? quiz;
+    List<ResultViewModel> results = new();
+
+    protected override void OnInitialized()
+    {
+        if (sessionService == null || !sessionService.isLoggedIn || sessionService.CurrentUser?.Role != "admin")
+        {
+            navigationManager.NavigateTo("/login");
+            return;
+        }
+
+        quiz = _context.Quizzes.FirstOrDefault(q => q.QuizID == QuizId);
+
+        results = (from attempt in _context.Attempts
+                   join student in _context.Users on attempt.StudentID equals student.UserID
+                   join result in _context.Results on attempt.AttemptID equals result.AttemptID into resultGroup
+                   from r in resultGroup.DefaultIfEmpty()
+                   where attempt.QuizID == QuizId
+                   select new ResultViewModel
+                   {
+                       StudentName = student.Name,
+                       StudentEmail = student.Email,
+                       StartTime = attempt.StartTime,
+                       EndTime = attempt.EndTime,
+                       Score = attempt.Score,
+                       TotalMarks = r != null ? r.TotalMarks : 0,
+                       Percentage = r != null ? r.Percentage : 0
+                   }).ToList();
+    }
+
+    void GoBack()
+    {
+        navigationManager.NavigateTo("/admin/quizzes");
+    }
+
+    class ResultViewModel
+    {
+        public string StudentName { get; set; }
+        public string StudentEmail { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int Score { get; set; }
+        public double TotalMarks { get; set; }
+        public double Percentage { get; set; }
+    }
+}

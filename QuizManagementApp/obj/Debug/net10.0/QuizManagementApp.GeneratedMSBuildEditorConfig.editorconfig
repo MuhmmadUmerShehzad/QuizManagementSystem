@@ -42,6 +42,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbkRhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/AdminQuizPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblF1aXpQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/AdminResults.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblJlc3VsdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Coding/IAD_github/QuizManagementSystem/QuizManagementApp/Components/Pages/AttemptQuiz.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdHRlbXB0UXVpei5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

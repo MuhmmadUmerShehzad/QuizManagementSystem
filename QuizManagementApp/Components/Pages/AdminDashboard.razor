@@ -27,6 +27,8 @@
 
 <hr />
 
+<button class="btn btn-primary" @onclick="ManageQuizzes">View Quizzes</button>
+
 <!-- Users List -->
 <h4>All Users</h4>
 
@@ -138,5 +140,10 @@
     void GoBackToHome()
     {
         navigationManager.NavigateTo("/");
+    }
+
+    void ManageQuizzes()
+    {
+        navigationManager.NavigateTo("/admin/quizzes");
     }
 }
