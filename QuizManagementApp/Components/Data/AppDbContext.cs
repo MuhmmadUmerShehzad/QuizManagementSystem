@@ -12,14 +12,8 @@ namespace YourApp.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Option> Options { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-
         public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<QuizQuestion> QuizQuestions { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<QuizQuestion>()
-                .HasKey(q => new { q.QuizID, q.QuestionID });
-        }
+        public DbSet<Attempt> Attempts {get; set;}
+        public DbSet<Result> Results {get; set;}
     }
 }

@@ -6,6 +6,10 @@
 
 @rendermode InteractiveServer
 
+<div style="margin-bottom: 20px;">
+    <button class="btn btn-secondary" @onclick="GoBackToDashboard">Back to Dashboard</button>
+</div>
+
 <h3>Question Management</h3>
 
 
@@ -78,8 +82,6 @@ Choose Difficulty Level:
         <button @onclick="() => DeleteQuestion(q.QuestionID)">Delete</button>
     </div>
 }
-
-<div>selected quiz id: @selectedQuizID</div>
 
 <div style="color: red;">@message</div>
 
@@ -244,6 +246,11 @@ Choose Difficulty Level:
         {
             message = "Invalid subject selection";
         }
+    }
+
+    void GoBackToDashboard()
+    {
+        NavManager.NavigateTo("/teacher");
     }
     
 }

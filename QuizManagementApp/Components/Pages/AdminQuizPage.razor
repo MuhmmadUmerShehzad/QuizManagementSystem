@@ -1,0 +1,87 @@
+@page "/admin/quizzes"
+@rendermode InteractiveServer
+@inject YourApp.Data.AppDbContext _context
+@inject YourApp.Services.sessionService sessionService
+@inject NavigationManager navigationManager
+@using YourApp.Models
+
+<h3>All Quizzes</h3>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Subject</th>
+            <th>Created By</th>
+            <th>Start Time</th>
+            <th>Duration (min)</th>
+            <th>Randomize</th>
+            <th>Shuffle</th>
+            <th>Attempts</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in quizList)
+        {
+            <tr>
+                <td>@item.Quiz.Title</td>
+                <td>@item.SubjectName</td>
+                <td>@item.CreatorName</td>
+                <td>@item.Quiz.StartTime</td>
+                <td>@item.Quiz.Duration</td>
+                <td>@item.Quiz.RandomizeQuestions</td>
+                <td>@item.Quiz.ShuffleOptions</td>
+                <td>@item.AttemptCount</td>
+                <td>
+                    <button class="btn btn-info" @onclick="() => ViewResults(item.Quiz.QuizID)">View Results</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<QuizViewModel> quizList = new();
+    List<Subject> subjects = new();
+    List<User> users = new();
+
+    protected override void OnInitialized()
+    {
+        if (sessionService == null || !sessionService.isLoggedIn || sessionService.CurrentUser?.Role != "admin")
+        {
+            @* navigationManager.NavigateTo("/login");
+            return; *@
+        }
+
+        subjects = _context.Subjects.ToList();
+        users = _context.Users.ToList();
+
+        var quizzes = _context.Quizzes.ToList();
+        var attemptCounts = _context.Attempts
+            .GroupBy(a => a.QuizID)
+            .Select(g => new { QuizID = g.Key, Count = g.Count() })
+            .ToDictionary(x => x.QuizID, x => x.Count);
+
+        quizList = quizzes.Select(q => new QuizViewModel
+        {
+            Quiz = q,
+            SubjectName = subjects.FirstOrDefault(s => s.SubjectID == q.SubjectID)?.SubjectName ?? "",
+            CreatorName = users.FirstOrDefault(u => u.UserID == q.CreatedBy)?.Name ?? "",
+            AttemptCount = attemptCounts.ContainsKey(q.QuizID) ? attemptCounts[q.QuizID] : 0
+        }).ToList();
+    }
+
+    void ViewResults(int quizId)
+    {
+        navigationManager.NavigateTo($"/admin/quiz/{quizId}/results");
+    }
+
+    class QuizViewModel
+    {
+        public Quiz Quiz { get; set; }
+        public string SubjectName { get; set; }
+        public string CreatorName { get; set; }
+        public int AttemptCount { get; set; }
+    }
+}

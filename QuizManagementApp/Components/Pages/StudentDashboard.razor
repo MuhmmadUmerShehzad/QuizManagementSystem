@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
                 <p>View and attempt quizzes assigned to you.</p>
-                <button class="btn btn-primary">Browse Quizzes</button>
+                <button class="btn btn-primary" @onclick="@(()=>navigationManager.NavigateTo("/student/quizzes"))">Browse Quizzes</button>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 <p>Check your grades and performance.</p>
-                <button class="btn btn-primary">View History</button>
+                <button class="btn btn-primary" @onclick="@(()=>navigationManager.NavigateTo("student/results"))">View History</button>
             </div>
         </div>
     </div>
