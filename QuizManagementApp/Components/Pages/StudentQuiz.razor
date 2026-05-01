@@ -54,9 +54,9 @@
 
 
         subjects = _context.Subjects.ToList();
-        int studentId = sessionService.CurrentUser.UserID;
+        studentId = sessionService.CurrentUser.UserID;
 
-        var availableQuizzes = (from q in _context.Quizzes
+        availableQuizzes = (from q in _context.Quizzes
                                 join a in _context.Attempts
                                 on q.QuizID equals a.QuizID into qa
                                 from a in qa
