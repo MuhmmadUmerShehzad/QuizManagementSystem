@@ -50,8 +50,8 @@
     {
         if (sessionService == null || !sessionService.isLoggedIn || sessionService.CurrentUser?.Role != "admin")
         {
-            @* navigationManager.NavigateTo("/login");
-            return; *@
+            navigationManager.NavigateTo("/login");
+            return; 
         }
 
         subjects = _context.Subjects.ToList();

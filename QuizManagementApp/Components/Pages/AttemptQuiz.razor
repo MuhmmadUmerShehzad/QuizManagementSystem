@@ -1,9 +1,11 @@
 @page "/student/attempt/{QuizId:int}/{QuizStartTimeTicks:long}"
 @rendermode InteractiveServer
 
+
 @inject YourApp.Data.AppDbContext _context
 @inject YourApp.Services.sessionService sessionService
 @inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
 
 <div style="margin-bottom: 20px;">
     <button class="btn btn-secondary" @onclick="GoBackToQuizzes">Back to Quizzes</button>
@@ -89,16 +91,18 @@ else
     bool showSubmit = true;
 
 
+
     protected override void OnInitialized()
     {
         if (sessionService == null || !sessionService.isLoggedIn || sessionService.CurrentUser?.Role != "Student")
         {
-            @* navigationManager.NavigateTo("/login"); *@
-            @* return; *@
+            navigationManager.NavigateTo("/login"); 
+            return; 
         }
 
         // Convert ticks back to DateTime
-        quizStartTime = new DateTime(QuizStartTimeTicks);
+        // quizStartTime = new DateTime(QuizStartTimeTicks);
+        quizStartTime = DateTime.Now; 
 
         LoadQuiz();
     }
@@ -141,8 +145,11 @@ else
         }
     }
 
-    void SubmitQuiz()
+    async Task SubmitQuiz()
     {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to submit your quiz? This will count as your attempt.");
+        if (!confirmed) return;
+
         try
         {
             if (quiz == null)
@@ -213,4 +220,5 @@ else
     void GoBackToQuizzes()
     {
         navigationManager.NavigateTo("/student/quizzes");
-    }}
+    }
+}

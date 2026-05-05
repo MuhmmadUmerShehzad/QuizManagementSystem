@@ -164,6 +164,32 @@ Choose Difficulty Level:
 
             debugMessage = "All options saved successfully";
 
+            // Drop existing attempts and results for this quiz so students can re-attempt the updated version
+            var attemptIds = _context.Attempts
+                .Where(a => a.QuizID == selectedQuizID)
+                .Select(a => a.AttemptID)
+                .ToList();
+
+            var resultsToDelete = _context.Results
+                .Where(r => attemptIds.Contains(r.AttemptID))
+                .ToList();
+
+            var attemptsToDelete = _context.Attempts
+                .Where(a => a.QuizID == selectedQuizID)
+                .ToList();
+
+            if (resultsToDelete.Any())
+            {
+                _context.Results.RemoveRange(resultsToDelete);
+            }
+            if (attemptsToDelete.Any())
+            {
+                _context.Attempts.RemoveRange(attemptsToDelete);
+            }
+
+            _context.SaveChanges();
+            debugMessage += " | Existing attempts cleared";
+
             // reset
             questionText = "";
             option1 = option2 = option3 = option4 = "";
