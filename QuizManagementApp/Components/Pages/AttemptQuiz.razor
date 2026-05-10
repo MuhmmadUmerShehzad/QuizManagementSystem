@@ -126,11 +126,20 @@ else
             // Load options for all questions
             var questionIds = questions.Select(q => q.QuestionID).ToList();
             options = _context.Options.Where(o => questionIds.Contains(o.QuestionID)).ToList();
+
+            // Shuffle options for each question
+            ShuffleOptions();
         }
         catch (Exception ex)
         {
             errorMessage = "Error loading quiz: " + ex.Message;
         }
+    }
+
+    void ShuffleOptions()
+    {
+        Random random = new Random();
+        options = options.OrderBy(x => random.Next()).ToList();
     }
 
     void SelectAnswer(int questionId, int optionId)
@@ -147,6 +156,7 @@ else
 
     async Task SubmitQuiz()
     {
+        // alert requires javascript to mai ye use kr rha hu 
         bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to submit your quiz? This will count as your attempt.");
         if (!confirmed) return;
 
@@ -190,6 +200,7 @@ else
         }
     }
 
+    // ye bychaaray k marks dekhny k liye h bs flag check kr ez scene bro
     int CalculateScore()
     {
         int correctAnswers = 0;

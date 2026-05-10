@@ -7,9 +7,9 @@
     <button class="btn btn-secondary" @onclick="GoBackToHome">Back to Home</button>
 </div>
 
-<h3>Admin Dashboard - Manage Users</h3>
+<h3>Admin Dashboard Manage Users</h3>
 
-<!-- Add User -->
+<!-- Add kro bychaaray user ko -->
 <h4>Add User</h4>
 <EditForm Model="newUser" OnValidSubmit="AddUser" FormName="AddUserForm">
     <InputText @bind-Value="newUser.Name" placeholder="Name" />
@@ -27,7 +27,7 @@
 
 <hr />
 
-<!-- Users List -->
+<!-- Users KI List name wagehera :D -->
 <h4>All Users</h4>
 
 <table border="1" style="gap: 100px;">
@@ -39,6 +39,7 @@
         <th>Actions</th>
     </tr>
 
+    @* user pr button laga do cuz wo bohot free ho ra *@
     @foreach (var user in users)
     {
         <tr>
@@ -54,7 +55,7 @@
     }
 </table>
 
-<!-- Edit Section -->
+<!-- Edit kro user ko wala section -->
 @if (editUser != null)
 {
     <h4>Edit User</h4>
@@ -74,10 +75,12 @@
 }
 
 @code {
+    // list banao user ki wrna bhaao ni de ga wo 
     List<YourApp.Models.User> users = new();
     YourApp.Models.User newUser = new() { Name = "", Email = "", PasswordHash = "", Role = "" };
     YourApp.Models.User? editUser;
 
+    // Admin start page mai ye aye ga (aanay waalon ko roktay nhi hain)
     protected override void OnInitialized()
     {
         
@@ -103,6 +106,7 @@
 
     void DeleteUser(int id)
     {
+        // khopri tor de uska 
         var user = _context.Users.Find(id);
         if (user != null)
         {
